@@ -1,7 +1,7 @@
 package com.solusoftec.controllers.tiktok;
 
-import com.solusoftec.models.facebook.FBCredentials;
-import com.solusoftec.services.facebook.FBCredentialsService;
+import com.solusoftec.models.tiktok.TiktokCredentials;
+import com.solusoftec.services.tiktok.CredentialsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,16 +12,16 @@ import java.util.List;
 @RequestMapping("/tiktok/credentials")
 @CrossOrigin(origins = "http://localhost:3000")
 public class CredentialsController {
-    private final FBCredentialsService credentialService;
+    private final CredentialsService credentialService;
 
     @Autowired
-    public CredentialsController(FBCredentialsService credentialService) {
+    public CredentialsController(CredentialsService credentialService) {
         this.credentialService = credentialService;
     }
 
     // Endpoint para obtener todas las credenciales
     @GetMapping
-    public List<FBCredentials> getAllCredentials() throws IOException {
+    public List<TiktokCredentials> getAllCredentials() throws IOException {
         return credentialService.getCredentials();
     }
 

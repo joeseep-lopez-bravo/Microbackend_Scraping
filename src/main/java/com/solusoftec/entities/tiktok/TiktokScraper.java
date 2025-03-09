@@ -33,6 +33,8 @@ public class TiktokScraper {
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
+    @Column(name = "scraper_type")
+    private String scraperType;
 
     @PrePersist
     protected void onCreate() {

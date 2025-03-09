@@ -1,7 +1,7 @@
-package com.solusoftec.services.tiktok;
+package com.solusoftec.services.instagram;
 
-import com.solusoftec.entities.tiktok.TiktokScraper;
-import com.solusoftec.repositories.tiktok.TiktokScraperRepository;
+import com.solusoftec.entities.instagram.IGScraper;
+import com.solusoftec.repositories.instagram.IGScraperRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -12,25 +12,25 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-
 @Service
 @RequiredArgsConstructor
-public class TiktokScraperService {
-    private final TiktokScraperRepository schedulerRepository;
-    private static final String SCRAPER_PATH = "D:\\Joeseep\\web_scrap\\Selenium_scrape\\tiktok_scrape\\scrape_main_tiktok.py";
-    private static final String WORKING_DIRECTORY = "D:\\Joeseep\\web_scrap\\Selenium_scrape\\tiktok_scrape\\";
+public class IGScraperService {
+
+    private final IGScraperRepository schedulerRepository;
+    private static final String SCRAPER_PATH = "D:\\Joeseep\\web_scrap\\Selenium_scrape\\instagram_scrape\\scrape_main_ig.py";
+    private static final String WORKING_DIRECTORY = "D:\\Joeseep\\web_scrap\\Selenium_scrape\\instagram_scrape\\";
 
     @PostConstruct
     public void init() {
-        System.out.println("✅ TiktokScraperService ha sido inicializado correctamente");
+        System.out.println("✅ IGScraperService ha sido inicializado correctamente");
     }
 
-    public TiktokScraper createScheduler(TiktokScraper scheduler) {
+    public IGScraper createScheduler(IGScraper scheduler) {
         System.out.println("📝 Guardando nueva tarea: " + scheduler.getScraperType());
         return schedulerRepository.save(scheduler);
     }
 
-    public List<TiktokScraper> getAllSchedulers() {
+    public List<IGScraper> getAllSchedulers() {
         return schedulerRepository.findAll();
     }
 
@@ -41,14 +41,14 @@ public class TiktokScraperService {
 
     @Scheduled(cron = "0 * * * * *") // Ejecuta cada minuto
     public void executeScheduledTasks() {
-        List<TiktokScraper> schedulers = schedulerRepository.findAll();
+        List<IGScraper> schedulers = schedulerRepository.findAll();
         String currentTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
         LocalDateTime now = LocalDateTime.now();
 
         System.out.println("⏳ Revisando tareas programadas... " + now);
         System.out.println("Hora actual: " + currentTime);
 
-        for (TiktokScraper scheduler : schedulers) {
+        for (IGScraper scheduler : schedulers) {
             System.out.println("Verificando tarea ID: " + scheduler.getId());
             System.out.println("Execution Times: " + scheduler.getExecutionTimes());
             System.out.println("Execution Dates: " + scheduler.getExecutionDates());
@@ -61,14 +61,11 @@ public class TiktokScraperService {
                     case "perfil":
                         executeScraperPerfil();
                         break;
-                    case "perfil_login":
-                        executeScraperPerfilLogin();
+                    case "all":
+                        executeScraperTodos();
                         break;
                     case "busqueda":
                         executeScraperBusqueda();
-                        break;
-                    case "busqueda_login":
-                        executeScraperBusquedaLogin();
                         break;
                     default:
                         System.out.println("⚠ Tipo de scraper desconocido: " + scheduler.getScraperType());
@@ -78,11 +75,11 @@ public class TiktokScraperService {
             }
         }
     }
-    private boolean shouldExecute(TiktokScraper scheduler, String currentTime, LocalDateTime now) {
+    private boolean shouldExecute(IGScraper scheduler, String currentTime, LocalDateTime now) {
         boolean timeMatches = scheduler.getExecutionTimes().contains(currentTime);
         boolean dateMatches = scheduler.getExecutionDates().contains(now.toLocalDate());
         boolean beforeEnd = now.isBefore(scheduler.getEndTime());
-       /** System.out.println("🔍 Verificación de tarea ID: " + scheduler.getId());
+        System.out.println("🔍 Verificación de tarea  IG ID: " + scheduler.getId());
         System.out.println("   - Hora actual: " + currentTime);
         System.out.println("   - Horas de ejecución: " + scheduler.getExecutionTimes());
         System.out.println("   - Coincidencia de hora: " + timeMatches);
@@ -90,18 +87,14 @@ public class TiktokScraperService {
         System.out.println("   - Fechas de ejecución: " + scheduler.getExecutionDates());
         System.out.println("   - Coincidencia de fecha: " + dateMatches);
         System.out.println("   - Fecha límite: " + scheduler.getEndTime());
-        System.out.println("   - ¿Antes del límite? " + beforeEnd);**/
+        System.out.println("   - ¿Antes del límite? " + beforeEnd);
 
         return timeMatches && dateMatches && beforeEnd;
 
     }
 
-    public void executeScraperPerfilLogin() {
-        ejecutarScraperConArgumento("perfil_login");
-    }
-
-    public void executeScraperBusquedaLogin() {
-        ejecutarScraperConArgumento("busqueda_login");
+    public void executeScraperTodos() {
+        ejecutarScraperConArgumento("all");
     }
 
     public void executeScraperPerfil() {
@@ -125,4 +118,9 @@ public class TiktokScraperService {
             e.printStackTrace();
         }
     }
+
+
 }
+
+
+

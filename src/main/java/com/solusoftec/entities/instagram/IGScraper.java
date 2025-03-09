@@ -1,4 +1,4 @@
-package com.solusoftec.entities.twitter;
+package com.solusoftec.entities.instagram;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -6,10 +6,11 @@ import lombok.Data;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+
 @Data
 @Entity
 @Table(name = "scheduler_scraper")
-public class XScraper {
+public class IGScraper {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,7 +42,7 @@ public class XScraper {
         this.createdAt = LocalDateTime.now();
     }
 
-
 }
+
 
 
