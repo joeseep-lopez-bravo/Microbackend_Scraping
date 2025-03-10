@@ -43,8 +43,6 @@ public class IGPublicacionController {
     }
 
 
-
-
     @GetMapping("/{publicacionId}/comentarios")
     public ResponseEntity<Page<IGComentarioDTO>> getComentariosPorPublicacion(
             @PathVariable Integer publicacionId,
